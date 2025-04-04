@@ -1,9 +1,9 @@
 {
-  "name": "@angryart/create-arkitect",
-  "version": "0.1.0",
+  "name": "@arthurtsang/create-arkitect",
+  "version": "1.0.0",
   "description": "Scaffold an Arkitect documentation site",
   "bin": "cli.js",
   "dependencies": {
-    "@angryart/arkitect-app": "^0.1.0"
+    "@arthurtsang/arkitect-app": "^1.0.0"
   }
 }
