@@ -1,7 +1,7 @@
-// remcs/react/App.jsx
+// create-arkitect/templates/react/App.jsx
 import React, { useState, useEffect } from "react";
-import { BrowserRouter } from "react-router-dom";
-import Breadcrumb from "@angryart/arkitect-app/Breadcrumb";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Breadcrumb from "@arthurtsang/arkitect-app/Breadcrumb";
 import routes from "../src/_data/routes.json";
 
 const componentModules = import.meta.glob("../react/components/*.jsx", { eager: true });
@@ -9,29 +9,27 @@ const components = {};
 for (const [path, module] of Object.entries(componentModules)) {
   const componentName = path.split("/").pop().replace(".jsx", "");
   components[componentName] = module.default;
-  console.log("App v1.19: Loaded component:", componentName);
+  console.log("App v1.26: Loaded component:", componentName);
 }
 
 const App = () => {
-  console.log("App v1.19: Starting render");
+  console.log("App v1.26: Starting render");
   const [layoutData, setLayoutData] = useState(null);
 
   useEffect(() => {
-    console.log("App v1.19: useEffect running");
+    console.log("App v1.26: useEffect running");
     const layout = document.querySelector(".layout");
     if (!layout) {
-      console.error("App v1.19: Layout element not found");
+      console.error("App v1.26: Layout element not found");
       setLayoutData({ error: "Layout not found" });
       return;
     }
     const header = layout.querySelector(".top-header")?.outerHTML || "";
     const nav = layout.querySelector(".left-nav")?.outerHTML || "";
-    const content = layout.querySelector(".content")?.innerHTML || "";
-    console.log("App v1.19: Layout found, hydration complete");
-    console.log("App v1.19: Header:", header);
-    console.log("App v1.19: Nav:", nav);
-    console.log("App v1.19: Content:", content);
-    setLayoutData({ header, nav, content });
+    console.log("App v1.26: Layout found, hydration complete");
+    console.log("App v1.26: Header:", header);
+    console.log("App v1.26: Nav:", nav);
+    setLayoutData({ header, nav });
   }, []);
 
   if (!layoutData) {
@@ -44,7 +42,6 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <Breadcrumb routes={routes} />
       <div className="layout">
         <header
           className="top-header"
@@ -57,14 +54,16 @@ const App = () => {
           />
           <div className="main-container">
             <div className="breadcrumb-wrapper">
-              {/* Empty for layout consistency */}
+              <Breadcrumb routes={routes} />
             </div>
             <main className="content">
-              {layoutData.content ? (
-                <DynamicContent content={layoutData.content} />
-              ) : (
-                "No content available"
-              )}
+              <Routes>
+                <Route path="/" element={<HomeContent />} />
+                <Route path="/sad/" element={<SadContent />} />
+                <Route path="/sad/introduction/" element={<SadIntroContent />} />
+                <Route path="/sad/overview/" element={<SadOverviewContent />} />
+                <Route path="*" element={<div>404 - Not Found</div>} />
+              </Routes>
             </main>
           </div>
         </div>
@@ -72,6 +71,39 @@ const App = () => {
     </BrowserRouter>
   );
 };
+
+// Content Components
+const HomeContent = () => (
+  <div>
+    <h1>Welcome to Arkitect</h1>
+    <p>This is a sample page. Below is an interactive React component.</p>
+  </div>
+);
+
+const SadContent = () => (
+  <DynamicContent
+    content={`
+      <h1>Simple SAD</h1>
+      <p>A basic architecture overview.</p>
+      <div data-react="JsonSchemaViewer"></div>
+      <p>More content below the component.</p>
+    `}
+  />
+);
+
+const SadIntroContent = () => (
+  <div>
+    <h1>Introduction</h1>
+    <p>This is the introduction to the Software Architecture Document.</p>
+  </div>
+);
+
+const SadOverviewContent = () => (
+  <div>
+    <h1>Overview</h1>
+    <p>This is an overview of the Software Architecture Document.</p>
+  </div>
+);
 
 const DynamicContent = ({ content }) => {
   console.log("DynamicContent: Starting render with content:", content);

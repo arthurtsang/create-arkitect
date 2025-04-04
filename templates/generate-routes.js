@@ -25,6 +25,7 @@ async function generateRoutes() {
             const route = {
               path: permalinkMatch[1].trim(),
               breadcrumb: titleMatch[1].trim(),
+              toc: [],
             };
 
             if (tocMatch) {
@@ -34,8 +35,6 @@ async function generateRoutes() {
                 const url = line.match(/url:\s*(.+)/)?.[1];
                 return { title, url };
               }).filter((item) => item.title && item.url);
-            } else {
-              route.toc = [];
             }
 
             routes.push(route);
@@ -46,13 +45,33 @@ async function generateRoutes() {
   }
 
   await scanDir(contentDir);
+
+  // Sort routes by path depth
   routes.sort((a, b) => a.path.split("/").length - b.path.split("/").length);
-  routes.unshift({ path: "/", breadcrumb: "Home" });
+
+  // Add Home route
+  routes.unshift({ path: "/", breadcrumb: "Home", toc: [] });
+
+  // Populate TOC for parent routes, excluding self
+  for (const route of routes) {
+    if (route.path !== "/" && route.path.split("/").length > 2) {
+      const parentPath = "/" + route.path.split("/")[1] + "/";
+      const parentRoute = routes.find((r) => r.path === parentPath);
+      if (parentRoute && route.path !== parentRoute.path && !parentRoute.toc.some((child) => child.url === route.path)) {
+        parentRoute.toc.push({
+          url: route.path,
+          title: route.breadcrumb,
+        });
+      }
+    }
+  }
+
   await fs.mkdir(path.join(process.cwd(), "src/_data"), { recursive: true });
   await fs.writeFile(
     path.join(process.cwd(), "src/_data/routes.json"),
     JSON.stringify(routes, null, 2)
   );
+  console.log("Generated routes:", routes);
 }
 
 generateRoutes().catch(console.error);
