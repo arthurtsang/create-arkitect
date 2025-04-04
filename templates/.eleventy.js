@@ -17,8 +17,11 @@ export default async function (eleventyConfig) {
   });
   eleventyConfig.setLibrary("md", md);
 
-  eleventyConfig.addNunjucksShortcode("react", (componentName) => {
-    return `<div data-react="${componentName}"></div>`;
+  eleventyConfig.addNunjucksShortcode("react", function (componentName, props = {}) {
+    const propsString = Object.entries(props)
+      .map(([key, value]) => `${key}="${value}"`)
+      .join(" ");
+    return `<div data-react="${componentName}" ${propsString}></div>`;
   });
 
   return {
