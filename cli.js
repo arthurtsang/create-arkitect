@@ -46,14 +46,14 @@ async function scaffold() {
         await fs.mkdir(fullPath, { recursive: true });
         await writeStructure(fullPath, value);
       }
-      console.log( `Created: ${fullPath}`);
+      console.log(`Created: ${fullPath}`);
     }
   }
 
   await writeStructure(projectDir, structure);
 
   console.log("Setting up dependencies...");
-  execSync(`cd ${projectDir} && npm init -y && npm link @angryart/arkitect-app`, { stdio: "inherit" });
+  execSync(`cd ${projectDir} && npm init -y && npm install @arthurtsang/arkitect-app --force`, { stdio: "inherit" });
   execSync(`cd ${projectDir} && npm install`, { stdio: "inherit" });
 
   console.log(`Created ${projectDir} successfully! Run 'cd ${projectDir} && npm run build' to get started.`);
