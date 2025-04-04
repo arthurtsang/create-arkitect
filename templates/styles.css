@@ -1,0 +1,99 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  .layout {
+    display: flex;
+    flex-direction: column;
+  }
+  .top-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: #333;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+  .logo img {
+    width: 24px;
+    margin-right: 10px;
+  }
+  .search {
+    flex: 1;
+    margin: 0 20px;
+  }
+  .search input {
+    width: 100%;
+    padding: 5px;
+  }
+  .right {
+    margin-left: auto;
+  }
+  .content-wrapper {
+    display: flex;
+    flex: 1;
+  }
+  .left-nav {
+    width: 60px;
+    background: #f0f0f0;
+    padding: 10px 0;
+  }
+  .left-nav a {
+    display: block;
+    margin: 10px 0;
+    text-align: center;
+    color: #333;
+  }
+  .left-nav i {
+    font-size: 24px;
+  }
+  .main-container {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+  }
+  .content {
+    flex: 3;
+    padding: 20px;
+  }
+  main {
+    flex: 1;
+  }
+  main h1, main p, main pre, main div[data-react] {
+    display: block;
+    margin: 15px 0;
+  }
+  .toc {
+    flex: 1;
+    margin-right: 20px;
+    padding: 20px;
+    border-right: 2px solid #ccc;
+    background: #f9f9f9;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+  }
+  .toc ul {
+    list-style: none;
+    padding: 0;
+  }
+  .toc ul ul {
+    padding-left: 20px;
+  }
+  .toc a {
+    text-decoration: none;
+    color: #333;
+  }
+  .toc a:hover {
+    text-decoration: underline;
+  }
+  .dark-mode {
+    background: #222;
+    color: #fff;
+  }
